@@ -9,11 +9,11 @@ a .py file implementing functions mentioned above
 
 *todo list:*
 
-1.relating pictorial resources
+ 1.relating pictorial resources
 
-2. .exe file
+ 2. .exe file
 
-3. .ui file
+ 3. .ui file
 
 
 ~~You may find it unable to run directly, in that case, just delete the code involving reading the locol picture resources that haven't been uploaded yet, though I swear they will be soon.~~
