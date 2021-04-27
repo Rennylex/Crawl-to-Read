@@ -4,13 +4,17 @@ A spider exe designed to crawl everything valuable on https://book.douban.com, r
 **FEEL FREE TO MAKE ANY NECESSARY CHANGES ACCORDING TO YOUR OWN DEMANDS!**
 
 *What does it include?*
+
 a .py file implementing functions mentioned above
 
-*todo list*
+*todo list:*
 
-relating pictorial resources
+1.relating pictorial resources
 
-.exe file
+2. .exe file
+
+3. .ui file
+
 
 ~~You may find it unable to run directly, in that case, just delete the code involving reading the locol picture resources that haven't been uploaded yet, though I swear they will be soon.~~
 
