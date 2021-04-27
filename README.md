@@ -9,7 +9,7 @@ a .py file implementing functions mentioned above
 
 *todo list:*
 
- 1.relating pictorial resources
+ 1. relating pictorial resources
 
  2. .exe file
 
