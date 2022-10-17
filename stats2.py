@@ -28,12 +28,14 @@ from threading import Thread
 
 from sklearn.model_selection import train_test_split
 
+# dictionaries for wordcloud
 dtlist=[]
 yearcloud=[]
 nationcloud=[]
 authorcloud=[]
 pubcloud=[]
 
+#finding the publishing year
 nyear2005=0
 nyear2010=0
 nyear2015=0
@@ -41,23 +43,25 @@ nyear2020=0
 
 spide=0
 
+#find the book information on rating
 nrate60=0
 nrate70=0
 nrate80=0
 nrate90=0
 
-
+#find the book information on pricing
 nprice50=0
 nprice100=0
 nprice150=0
 
-
+#find the book information on readers
 nnum1k=0
 nnum10k=0
 nnum20k=0
 
 
 def savedata(datalist, savepath, savenum):
+    """save the data into excel"""
     print('saving...')
     book = xlwt.Workbook(encoding="UTF-8", style_compression=0)  # create work book
 
@@ -75,7 +79,7 @@ def savedata(datalist, savepath, savenum):
         print("writing in the %dth data" % i)
         data = datalist[i]
         for j in range(0, 11):
-            sheet.write(i + 1, j, data[j])  # 第一行是各类标题，所以要加个1
+            sheet.write(i + 1, j, data[j])  ##The first line is all kinds of titles, therefore we need to +1. 第一行是各类标题，所以要加个1
 
     book.save(savepath)
 
@@ -84,6 +88,7 @@ def askURL(url):
     head = {
         "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/42.0.2311.135 Safari/537.36 Edge/12.10240"}
     # 用户代理user agent告诉访问的服务器我们的机器，浏览器类型，知道可以获得什么文件类型
+    #user agent is used to tell the server what kind of machine and browser we are using, so that we can get the file type we want
     request = urllib.request.Request(url, headers=head)
     html = ""
     try:
@@ -103,15 +108,16 @@ def getdata(baseurl):
     savenum = 0
     datalist = []
     findlink = re.compile(r'<a href="(.*?)"')  # 全局变量，创建正则表达式对象，r的意思是防止链接中的/符号起转义作用
+    # global variable, create regular expression object, r means to prevent the / symbol in the link from playing the role of escape
     for i in range(0, 3):  # 181):
         url = baseurl + str(i * 20)
         html = askURL(url)
         soup = BeautifulSoup(html, "html.parser")
         for item in soup.find_all('li', class_="subject-item"):  # class是该函数参数，要加个下划线,row是APS每条结果的类名
+            # class is the function parameter, add an underscore, row is the class name of each result of APS
             item = str(item)
-            # print(item)
             # link=re.findall(findlink, item)#re正则表达式规则设定,link是获取论文链接
-            # print(link)
+            # re regular expression rule setting, link is to get the paper link
             book_name = re.findall(r'}\)" title="(.*?)">', item, re.DOTALL)[0]
             book_author = re.findall(r'<div class="pub">.*? \n  \n  (.*?)/', item, re.DOTALL)[0]
             book_year = re.findall(r'<div class="pub">.*? \n  \n  .*?/ (\d{4})', item, re.DOTALL)[0]
@@ -163,7 +169,7 @@ def getdata(baseurl):
                 book_publisher = book_publisher[0]
 
             float(book_rate)  # 转换浮点数
-
+            #converting floating point number
             global nationcloud
             nationcloud.append(book_nation)
 
@@ -266,6 +272,7 @@ class Window2:
 
     def handleBack(self):
         # 实例化另外一个窗口
+        #init another window
         global yearcloud,nationcloud,authorcloud,pubcloud
         yearcloud = []
         nationcloud = []
@@ -273,8 +280,10 @@ class Window2:
         pubcloud = []
         self.window2 = Stats()
         # 显示新窗口
+        #show new window
         self.window2.ui.show()
         # 关闭自己
+        #close self
         self.ui.close()
 
 
@@ -336,8 +345,6 @@ class Top3:
 
             self.pic3 = QGraphicsPixmapItem()
             self.pic3.setPixmap(QPixmap('himage3.png').scaled(121, 151))
-        #self.pic.setFlags(QGraphicsItem.ItemIsSelectable | QGraphicsItem.ItemIsMovable) #可选择，可移动、
-        #self.pic.setOffset(100, 120)
         self.graphic_scene.addItem(self.pic)
         self.graphic_scene2.addItem(self.pic2)
         self.graphic_scene3.addItem(self.pic3)
@@ -647,6 +654,7 @@ class Stats:  # 定义窗口类，此为主窗口
 
     def open_new_dialog(self):
         # 实例化一个对话框类
+        # instanciate a dialog class
         self.dlg = MyDialog()
         # self.dlg.ui.show()
         self.dlg.ui.exec_()
@@ -655,10 +663,14 @@ class Stats:  # 定义窗口类，此为主窗口
 class MyDialog:
     def __init__(self):
         # 从文件中加载UI定义
-
         # 从 UI 定义中动态 创建一个相应的窗口对象
         # 注意：里面的控件对象也成为窗口对象的属性了
         # 比如 self.ui.button , self.ui.textEdit
+
+        # Load UI definition from file
+        # Create a window object dynamically from UI definition
+        # Note: the control objects in the UI definition also become the attributes of the window object
+        # For example: self.ui.button, self.ui.textEdit
         self.ui = QUiLoader().load('dialog.ui')
         self.ui.progressBar.setValue(0)
         self.testbar()
@@ -691,10 +703,6 @@ class MyDialog:
 
         t = Thread(target=run)
         t.start()
-
-        # self.ui.progressBar.show()
-        # self.ui.progressBar.show()
-        # self.ui.progressBar.reset()  # 重置进度条
 
 
 
